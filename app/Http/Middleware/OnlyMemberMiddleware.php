@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class OnlyGuestMiddleware
+class OnlyMemberMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,9 +18,9 @@ class OnlyGuestMiddleware
         $session = $request->session()->get("username");
 
         if (isset($session)) {
-            return redirect("/");
-        } else {
             return $next($request);
+        } else {
+            return redirect("/login");
         }
     }
 }

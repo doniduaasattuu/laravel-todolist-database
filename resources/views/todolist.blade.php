@@ -19,8 +19,17 @@
         </div>
         @endisset
 
+        @isset($message)
+        <div class="row">
+            <div class="alert alert-primary" role="alert">
+                {{ $message }}
+            </div>
+        </div>
+        @endisset
+
         <div class="row">
             <form method="post" action="/logout">
+                @csrf
                 <button class="w-15 btn btn-lg btn-danger" type="submit">Sign Out</button>
             </form>
         </div>
@@ -31,6 +40,7 @@
             </div>
             <div class="col-md-10 mx-auto col-lg-5">
                 <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/todolist">
+                    @csrf
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="todo" placeholder="todo">
                         <label for="todo">Todo</label>
@@ -41,9 +51,8 @@
         </div>
         <div class="row align-items-right g-lg-5 py-5">
             <div class="mx-auto">
-                <form id="deleteForm" method="post" style="display: none">
-
-                </form>
+                <!-- <form id="deleteForm" method="post" action="/delete" style="display: none">
+                </form> -->
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -53,13 +62,26 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        <?php
+                        $number = 0;
+                        ?>
+                        @foreach ($todolist as $todo)
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Belajar Laravel Dasar</td>
-                            <td>
-                                <button class="w-100 btn btn-lg btn-danger" type="submit">Remove</button>
-                            </td>
+                            <form id="deleteForm" method="post" action="/delete" style="display: none">
+                                @csrf
+                                <th scope="row">
+                                    {{ $number += 1 }}
+                                    <input type="hidden" id="id" name="id" value="{{ $todo->id }}">
+                                </th>
+                                <td>{{ $todo->todo }}</td>
+                                <td>
+                                    <button class="w-100 btn btn-lg btn-danger" type="submit">Remove</button>
+                                </td>
+                            </form>
                         </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>

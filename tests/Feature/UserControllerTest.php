@@ -29,4 +29,10 @@ class UserControllerTest extends TestCase
         ])
             ->assertRedirect("/");
     }
+
+    public function testLogout()
+    {
+        $this->post("/logout")
+            ->assertRedirect("/login");
+    }
 }

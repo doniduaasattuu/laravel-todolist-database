@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Services\TodolistService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -10,16 +11,21 @@ class UserController extends Controller
 {
 
     private UserService $userService;
+    private TodolistService $todolistService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, TodolistService $todolistService)
     {
         $this->userService = $userService;
+        $this->todolistService = $todolistService;
     }
 
     public function home()
     {
+        $todolist = $this->todolistService->getAll();
+
         return response()->view("todolist", [
-            "title" => "Todolist"
+            "title" => "Todolist",
+            "todolist" => $todolist
         ]);
     }
 
@@ -45,13 +51,19 @@ class UserController extends Controller
         $clientRequest = $this->userService->login($username, $password);
 
         if ($clientRequest) {
-            return redirect("/");
             $request->session()->put("username", $username);
+            return redirect("/");
         } else {
             return response()->view("login", [
                 "title" => "Login",
                 "error" => "Username or password is wrong"
             ]);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        $request->session()->forget("username");
+        return redirect("/");
     }
 }

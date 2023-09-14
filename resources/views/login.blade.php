@@ -26,11 +26,11 @@
                 <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/login">
                     @csrf
                     <div class="form-floating mb-3">
-                        <input name="username" type="text" class="form-control" id="username" placeholder="id">
+                        <input name="username" type="text" class="form-control" id="username" placeholder="id" value="guest">
                         <label for="username">User</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input name="password" type="password" class="form-control" id="password" placeholder="password">
+                        <input name="password" type="password" class="form-control" id="password" placeholder="password" value="guest">
                         <label for="password">Password</label>
                     </div>
                     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign In</button>
