@@ -2,27 +2,32 @@
 
 namespace App\Services\Impl;
 
+use App\Models\Todolist;
 use App\Services\TodolistService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TodolistServiceImpl implements TodolistService
 {
     public function save(string $todo): void
     {
-        DB::table("todolist")->insert([
+        Todolist::create([
             "todo" => $todo
         ]);
     }
 
     public function remove(string $id): void
     {
-        DB::table("todolist")->where("id", "=", $id)->delete();
+        $todolist = Todolist::query()->find($id);
+        if ($todolist != null) {
+            $todolist->first()->delete();
+        }
     }
 
     public function getAll(): Collection
     {
-        $collection = DB::table('todolist')->get();
+        $collection = Todolist::get();
         return $collection;
     }
 }

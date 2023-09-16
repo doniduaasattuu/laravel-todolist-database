@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Todolist;
 use App\Services\TodolistService;
 use App\Services\UserService;
 use Database\Seeders\TodolistSeeder;
@@ -18,7 +19,7 @@ class TodolistServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        DB::table("todolist")->truncate();
+        Todolist::truncate();
         $this->todolistService = $this->app->make(TodolistService::class);
     }
 
@@ -29,7 +30,7 @@ class TodolistServiceTest extends TestCase
         $this->todolistService->save("Laravel Database");
         $this->todolistService->save("Laravel Eloquent");
 
-        $collection = DB::table("todolist")->get();
+        $collection = Todolist::get();
         self::assertNotNull($collection);
         self::assertCount(4, $collection);
 
@@ -49,7 +50,7 @@ class TodolistServiceTest extends TestCase
 
         $this->todolistService->remove("1");
 
-        $collection = DB::table("todolist")->get();
+        $collection = Todolist::get();
         self::assertCount(3, $collection);
     }
 
@@ -59,13 +60,12 @@ class TodolistServiceTest extends TestCase
 
         $this->todolistService->remove("50");
 
-        $collection = DB::table("todolist")->get();
+        $collection = Todolist::get();
         self::assertCount(4, $collection);
     }
 
     public function testGetAllTodo()
     {
-
         $this->seed(TodolistSeeder::class);
         $collection = $this->todolistService->getAll();
         self::assertCount(4, $collection);

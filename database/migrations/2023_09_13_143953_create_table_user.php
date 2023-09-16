@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -16,6 +17,11 @@ return new class extends Migration
             $table->string("username", 100)->nullable(false);
             $table->string("password", 100)->nullable(false);
         });
+
+        DB::table('users')->insert([
+            "username" => "doni",
+            "password" => "rahasia",
+        ]);
     }
 
     /**
